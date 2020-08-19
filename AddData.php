@@ -4,15 +4,14 @@
 $error = '';
 $name = '';
 $email = '';
-$subject = '';
 $message = '';
 $id= '';
 $city = '';
 $state = '';
 $qual = '';
 $stream = '';
-
-
+$gender = '';
+$birthdate = '';
 
 function clean_text($string)
 {
@@ -21,6 +20,7 @@ function clean_text($string)
  $string = htmlspecialchars($string);
  return $string;
 }
+
 
 if(isset($_POST["submit"]))
 {
@@ -37,6 +37,28 @@ if(isset($_POST["submit"]))
   }
  }
     
+
+    
+if(isset($_POST["gender"]))
+{
+    $gender = $_POST["gender"];
+}
+else
+{
+    $gender = "No button selected";
+}
+    
+
+    
+if(isset($_POST["birthdate"]))
+{
+    $birthdate = $_POST["birthdate"];
+}
+else
+{
+    $birthdate = "No date selected";
+}
+    
     
  if(empty($_POST["email"]))
  {
@@ -52,25 +74,6 @@ if(isset($_POST["submit"]))
  }
     
     
- if(empty($_POST["subject"]))
- {
-  $error .= '<p><label class="text-danger">Subject is required</label></p>';
- }
- else
- {
-  $subject = clean_text($_POST["subject"]);
- }
-    
-    
- if(empty($_POST["message"]))
- {
-  $error .= '<p><label class="text-danger">Message is required</label></p>';
- }
- else
- {
-  $message = clean_text($_POST["message"]);
- }
-
     
 if(empty($_POST["id"]))
 {
@@ -78,51 +81,70 @@ if(empty($_POST["id"]))
 }
 else
 {
-    $message = clean_text($_POST["id"]);
+    $id = clean_text($_POST["id"]);
 }
   
    
+    
+    
+    
 if(empty($_POST["city"]))
 {
     $error .= '<p><label class ="text-danger">city is required</label></p>';
 }
 else
 {
-    $message = clean_text($_POST["city"]);
+    $city = clean_text($_POST["city"]);
 }
 
    
+    
+    
+    
+    
+    
 if(empty($_POST["state"]))
 {
     $error .= '<p><label class ="text-danger">State is required</label></p>';
 }
 else
 {
-    $message = clean_text($_POST["state"]);
+    $state = clean_text($_POST["state"]);
 }
   
-    
    
-if(empty($_POST["stream"]))
-{
-    $error .= '<p><label class ="text-danger">Stream is required</label></p>';
-}
-else
-{
-    $message = clean_text($_POST["stream"]);
-}
-      
     
-   
+    
+    
+    
+    
+    
 if(empty($_POST["qual"]))
 {
     $error .= '<p><label class ="text-danger">Qualification is required</label></p>';
 }
 else
 {
-    $message = clean_text($_POST["qual"]);
+    $qual = clean_text($_POST["qual"]);
 }
   
+
+    
+    
+    
+    
+if(empty($_POST["stream"]))
+{
+    $error .= '<p><label class ="text-danger">Stream is required</label></p>';
+}
+else
+{
+    $stream = clean_text($_POST["stream"]);
+}
+      
+    
+    
+    
     
     
  if($error == '')
@@ -135,20 +157,21 @@ else
   }
      
   $form_data = array(
-   'sr_no'  => $no_rows,
-   'name'  => $name,
-   'email'  => $email,
-   'subject' => $subject,
    'id'=>$id,
+   'name'  => $name,
+   'gender' =>$gender,
+   'birthdate'=>$birthdate,
+   'email'  => $email,
    'stream'=>$stream,
    'qual'=>$qual,
    'city'=>$city,
    'state'=>$state,
    'message' => $message
+      
   );
      
   fputcsv($file_open, $form_data);
-  $error = '<label class="text-success">Thank you for contacting us</label>';
+  $error = '<label class="text-success">Thank you</label>';
   $name = '';
   $email = '';
   $subject = '';
@@ -158,20 +181,24 @@ else
   $qual = '';
   $state = '';
   $city = '';
+  $gender = '';
+  $birthdate = '';
  }
 }
-
 ?>
+
+
+
 <!DOCTYPE html>
 <html>
  <head>
-  <title>How to Store Form data in CSV File using PHP</title>
+  <title>RegistrationForm</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  </head>
  <body>
-  <br />
+  <br/>
   
      
 <div class="container">
@@ -198,10 +225,10 @@ else
         <label> Gender</label>
           <br> 
           <label for = "male">Male</label>
-          <input type="radio"  name = "gend1" value = "<?php echo $gend1; ?>" />
+          <input type="radio"  name = "gender" value = "Male" >
           <br>  
           <label for = "Female">Female</label>
-          <input type="radio"  name = "gend2" value = "<?php echo $gend2; ?>" />
+          <input type="radio"  name = "gender" value = "Female" >
     </div>
         
         
@@ -225,12 +252,7 @@ else
       <label>Email</label>
       <input type="text" name="email" class="form-control"  value="<?php echo $email; ?>" />
      </div>
-         
-     <div class="form-group">
-      <label>Enter Subject</label>
-      <input type="text" name="subject" class="form-control" value="<?php echo $subject; ?>" />
-     </div>
-    
+        
         
     <div class = "form-group">
       <label> Qualification</label>
@@ -238,20 +260,15 @@ else
     </div>
     
     <div class = "form-group">
-        <label>Stream</label>
-        <input type = "text" name = "stream" class = "form-control" value="<?php echo $stream; ?>" />
+      <label> Stream</label>
+      <input type = "text" name = "stream" class = "form-control" value="<?php echo $stream; ?>" /> 
     </div>    
     
         
     <div class = "form-group">
         <label> </label>
         </div>    
-        
-     <div class="form-group">
-      <label>Enter Message</label>
-      <textarea name="message" class="form-control" placeholder="Enter Message"><?php echo $message; ?></textarea>
-     </div>
-        
+    
         
      <div class="form-group" align="center">
       <input type="submit" name="submit" class="btn btn-info" value="Submit" />
